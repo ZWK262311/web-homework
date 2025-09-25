@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<style>
+			div {
+				width: 400px;
+			}
+			label {
+				display: inline-block;
+				width: 80px;
+				text-align: right;
+				font-weight: bold;
+			}
+			span {
+				color: red;
+			}
+			input[type="radio"], label[style] {
+				display: inline-block;
+				width: auto;
+				text-align: left;
+				margin-right: 5px;
+			}
+			#codeCanvas {
+				vertical-align: middle;
+			}
+		</style>
+	</head>
+	<body>
+		<b><p style="color: blue">欢迎注册会员</p></b><br>
+			<form action="zwk.html" enctype="multipart/form-data"  method="get">
+				<div>
+					<label for="phonenum">手机号码：</label>
+					<input type="text" name="phonenum" id="phonenum" placeholder="11位手机号">
+					<span>必填</span>
+				</div>
+				<div>
+					<label for="password">创建密码：</label>
+					<input type="password" name="password" id="password" placeholder="8位密码">
+					<span>必填</span>
+				</div>
+				<div>
+					<label for="email">注册邮箱：</label>
+					<input type="email" name="email" id="email" placeholder="例如:zwk@abc.com">
+					<span>必填</span>
+				</div>
+				<div>
+					<label for="yzm">验证码：</label>
+					<input type="text" name="yzm" id="yzm" placeholder="请输入验证码">
+					<!--把图片改成canvas，实现点击图片也能刷新-->
+					<canvas id="codeCanvas" width="80" height="30"></canvas>
+					<button type="button" id="refresh">刷新</button>
+				</div>
+				<div>
+					<label>性别：</label>
+					<input type="radio" name="sex" value="male" checked> <label style="text-align: left; font-weight: normal;">男</label>
+					<input type="radio" name="sex" value="female" > <label style="text-align: left; font-weight: normal;">女</label>
+				</div>
+				<div>
+					<label for="birthday">生日：</label>
+					<input type="date" name="birthday" id="birthday" lang="zh-CN">
+				</div>
+				<div>
+					<label for="age">年龄：</label>
+					<input type="text" name="age" id="age">
+				</div>
+				<div>
+					<label for="province">籍贯：</label>
+					<select name="province" id="province">
+						<option value="">省份</option>
+						<option value="北京">北京</option>
+						<option value="天津">天津</option>
+						<option value="上海">上海</option>
+						<option value="重庆">重庆</option>
+						<option value="河北">河北</option>
+						<option value="山西">山西</option>
+						<option value="辽宁">辽宁</option>
+						<option value="吉林">吉林</option>
+						<option value="黑龙江">黑龙江</option>
+						<option value="江苏">江苏</option>
+						<option value="浙江">浙江</option>
+						<option value="安徽">安徽</option>
+						<option value="福建">福建</option>
+						<option value="江西">江西</option>
+						<option value="山东">山东</option>
+						<option value="河南">河南</option>
+						<option value="湖北">湖北</option>
+						<option value="湖南">湖南</option>
+						<option value="广东">广东</option>
+						<option value="海南">海南</option>
+						<option value="四川">四川</option>
+						<option value="贵州">贵州</option>
+						<option value="云南">云南</option>
+						<option value="陕西">陕西</option>
+						<option value="甘肃">甘肃</option>
+						<option value="青海">青海</option>
+						<option value="台湾">台湾</option>
+						<option value="内蒙古">内蒙古</option>
+						<option value="广西">广西</option>
+						<option value="西藏">西藏</option>
+						<option value="宁夏">宁夏</option>
+						<option value="新疆">新疆</option>
+						<option value="香港">香港</option>
+						<option value="澳门">澳门</option>
+					</select>
+					<select name="city" id="city">
+						<option value="">城市</option>
+					</select>
+				</div>
+				<div>
+					<label for="xueli">个人学历：</label>
+					<select name="xueli" id="xueli">
+						<option value="">请选择</option>
+						<option value="博士">博士</option>
+						<option value="硕士">硕士</option>
+						<option value="本科">本科</option>
+						<option value="大专">大专</option>
+						<option value="高中">高中</option>
+						<option value="初中及以下">初中及以下</option>
+					</select>
+				</div>
+				<div>
+					<label>月薪：</label>
+					<input type="range" id="score" name="score" min="0.0"max="10000.0"step="100.0"value="5000.0">
+					<span id="msg"></span>
+				</div>
+				<div>
+					<label>个人爱好：</label>
+					<input type="checkbox" name="kyomi" value="sing"> 唱歌
+					<input type="checkbox" name="kyomi" value="dance"> 跑步
+					<input type="checkbox" name="kyomi" value="swim"> 游泳
+				</div>
+				<div>
+					<label>个人照片：</label>
+					<input type="file" name="photo" id="photo" accept="image/*">
+					<img id="preview" style="max-width: 400px; display: none;" />
+				</div>
+				<div>
+					<label for="intro">个人简介：</label>
+					<textarea name="intro" id="intro" cols="40" rows="5" placeholder="请输入个人简介"></textarea>
+				</div>
+				<div>
+					<!--visibility: hidden不显示 用来占位 保证提交和重填可以对齐-->
+					<label style="visibility: hidden;">占位字符：</label>
+					<input  type="submit" value="提交">
+					<input  type="reset" value="重填">
+				</div>
+				<script>
+					// ================== 验证码部分 ==================
+					let currentCode = ''; // 存储当前生成的验证码
+					
+					// 生成一个四位随机数（1000 ~ 9999）
+					function generateCode() {
+						return Math.floor(1000 + Math.random() * 9000).toString();
+					}
+					
+					// 在 canvas 上绘制验证码和干扰线
+					function drawCode() {
+						const canvas = document.getElementById('codeCanvas');
+						const ctx = canvas.getContext('2d');
+						
+						// 生成新验证码并保存
+						currentCode = generateCode();
+						
+						// 清空画布
+						ctx.clearRect(0, 0, canvas.width, canvas.height);
+						
+						// 背景填充灰色
+						ctx.fillStyle = '#f2f2f2';
+						ctx.fillRect(0, 0, canvas.width, canvas.height);
+						
+						// 绘制验证码文字
+						ctx.font = '20px Arial';
+						ctx.fillStyle = '#333';
+						ctx.fillText(currentCode, 15, 22);
+						
+						// 绘制 10 条随机颜色的干扰线
+						for (let i = 0; i < 10; i++) {
+							ctx.strokeStyle = '#' + Math.floor(Math.random() * 16777215).toString(16);
+							ctx.beginPath();
+							ctx.moveTo(Math.random() * 80, Math.random() * 30);
+							ctx.lineTo(Math.random() * 80, Math.random() * 30);
+							ctx.stroke();
+						}
+					}
+					
+					// 页面初始化时先画一次验证码
+					drawCode();
+					
+					// 点击“刷新”按钮时重新绘制验证码
+					document.getElementById('refresh').onclick = drawCode;
+					
+					// 点击验证码图片时也能刷新
+					document.getElementById('codeCanvas').onclick = drawCode;
+					
+					// 表单提交时验证验证码是否正确
+					document.querySelector('form').addEventListener('submit', function (e) {
+						const inputCode = document.getElementById('yzm').value.trim(); // 获取用户输入
+						if (inputCode !== currentCode) {
+							alert('验证码输入错误，请重新输入！');
+							drawCode();
+							e.preventDefault(); // 阻止表单提交
+						}
+					});
+					
+					
+					// ================== 省市联动部分 ==================
+					const cityData = {
+						北京: ["北京市"], 天津: ["天津市"], 上海: ["上海市"], 重庆: ["重庆市"],
+						河北: ["石家庄", "唐山", "秦皇岛"], 山西: ["太原", "大同", "运城"],
+						辽宁: ["沈阳", "大连", "鞍山"], 吉林: ["长春", "吉林市", "延边"],
+						黑龙江: ["哈尔滨", "齐齐哈尔", "牡丹江"], 江苏: ["南京", "苏州", "无锡"],
+						浙江: ["杭州", "宁波", "温州"], 安徽: ["合肥", "芜湖", "安庆"],
+						福建: ["福州", "厦门", "泉州"], 江西: ["南昌", "赣州", "九江"],
+						山东: ["济南", "青岛", "烟台"], 河南: ["郑州", "洛阳", "开封"],
+						湖北: ["武汉", "宜昌", "襄阳"], 湖南: ["长沙", "株洲", "湘潭"],
+						广东: ["广州", "深圳", "珠海"], 海南: ["海口", "三亚"],
+						四川: ["成都", "绵阳", "德阳"], 贵州: ["贵阳", "遵义"],
+						云南: ["昆明", "大理"], 陕西: ["西安", "咸阳", "宝鸡"],
+						甘肃: ["兰州", "天水"], 青海: ["西宁"], 台湾: ["台北", "高雄"],
+						内蒙古: ["呼和浩特", "包头"], 广西: ["南宁", "桂林"],
+						西藏: ["拉萨"], 宁夏: ["银川"], 新疆: ["乌鲁木齐", "喀什"],
+						香港: ["香港"], 澳门: ["澳门"]
+					};
+					
+					// 监听省份下拉框变化
+					document.getElementById('province').addEventListener('change', function () {
+						const province = this.value; // 选中的省份
+						const citySelect = document.getElementById('city');
+						
+						// 重置城市下拉框
+						citySelect.innerHTML = '<option value="">城市</option>';
+						
+						// 如果该省份有对应的城市列表，就动态添加进去
+						if (cityData[province]) {
+							cityData[province].forEach(city => {
+								const option = document.createElement('option');
+								option.value = city;
+								option.textContent = city;
+								citySelect.appendChild(option);
+							});
+						}
+					});
+					
+					
+					// ================== 滑动条（显示月薪） ==================
+					const range = document.getElementById('score');
+					const msg = document.getElementById('msg');
+					
+					// 初始化
+					msg.textContent = range.value;
+					
+					// 实时显示数值
+					range.addEventListener('input', function () {
+						msg.textContent = this.value;
+					});
+					
+					
+					// ================== 图片预览功能 ==================
+					document.getElementById('photo').addEventListener('change', function (e) {
+						const file = e.target.files[0]; // 获取用户上传的文件
+						const preview = document.getElementById('preview');
+						
+						// 判断文件是否为图片
+						if (file && file.type.startsWith('image/')) {
+							const reader = new FileReader();
+							
+							// 文件读取完成后，把结果显示到 <img> 标签
+							reader.onload = function (ev) {
+								preview.src = ev.target.result;
+								preview.style.display = 'block';
+							};
+							
+							// 把图片读取为 base64 数据（本地预览）
+							reader.readAsDataURL(file);
+						} else {
+							// 如果不是图片，清空预览
+							preview.src = '';
+							preview.style.display = 'none';
+						}
+					});
+				</script>
+			</form>
+	</body>
+</html>
