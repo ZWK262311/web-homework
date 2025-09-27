@@ -1,0 +1,173 @@
+body {
+    background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+}
+
+a {
+    text-decoration: none;
+}
+
+.head {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* 保证在其他内容之上 */
+    display: flex; /*横向排列*/
+    align-items: center; /*垂直居中*/
+    background-color: #3498db;
+    margin-bottom: 16px;
+    padding: 3px 10px;
+    border-radius: 16px;
+}
+
+.logo_img { /* 设置logo图片为圆形 */
+    height: 40px;
+    width: 40px;
+    border-radius: 100%;
+    margin: 0;
+}
+
+/*设置logo的旋转效果（利用了大模型）*/
+.head a.head_title_logo {
+    margin-right: 16px;
+}
+
+@keyframes rotateCW {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotateCCW {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+.head a.head_title_logo:hover .logo_img {
+    animation: rotateCW 0.5s linear;
+}
+
+.head a.head_title_logo .logo_img {
+    animation: rotateCCW 0.5s linear;
+}
+
+
+.head a:not(.head_title_logo) {
+    color: pink;
+    font-size: 20px;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0); /* 初始背景透明 */
+    border: none; /* 去掉边框 */
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.head_right_as { /*让右侧按钮靠右显示*/
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.head a:not(.head_title_logo):hover {
+    background-color: #ffcc00;
+    color: #222;
+}
+
+.head a:not(.head_title_logo):active {
+    background-color: #e6b800;
+    color: #222;
+}
+
+.container {
+    font-size: 0; /* 消除间隙 */
+    text-align: left;
+}
+
+.container > div {
+    display: inline-block;
+    vertical-align: top;
+    width: 23%; /* 四列，每列大约 1/4 */
+    margin: 1%; /* 间距 */
+    box-sizing: border-box;
+}
+
+.acard {
+    aspect-ratio: 5 / 3;
+    display: block;
+    cursor: pointer;
+    position: relative; /* 用于定位遮罩和播放图标 */
+    border-radius: 20px;
+    overflow: hidden; /* 圆角裁剪 */
+}
+
+.cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.info {
+    padding: 10px 4px 0;
+    display: inline-flex;
+    align-items: center;
+    margin-right: 8px;
+    font-size: 12px;
+}
+
+.icon-play,
+.icon-comment,
+.icon-like {
+    width: 16px;
+    height: 16px;
+}
+
+
+.cover-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s;
+    object-fit: cover;
+}
+
+.cover-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* 鼠标悬停时显示遮罩和播放图标 */
+.acard:hover .cover-mask,
+.acard:hover .cover-play {
+    opacity: 1;
+}
+
+.play-num,
+.comment-num,
+.like-num {
+    margin-left: 4px;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 5px;
+    margin-bottom: 0;
+    padding: 0;
+}
